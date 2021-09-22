@@ -1,6 +1,8 @@
 ---
-title: "An Example Workshop"
-author: Sean Davis^[seandavi@gmail.com]
+title: "Advanced Phenotyping in Single Cell Data Analysis"
+author: Yingxin Lim^[yinxin.lin@sydney.edu.au]
+        Hani Jieun Kim^[hani.kim@sydney.edu.au]
+        Carissa Chen^[cchen@uni.sydney.edu.au]
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{An Example Workshop}
@@ -16,24 +18,20 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Workshop Title
+# Advanced Phenotyping in Single Cell Data Analysis
 
 Authors:
-    Author Name^[Institution],
-    Another Author^[Another Institution].
+    Yingxin Lim^[The University of Sydney],
+    Hani Jieun Kim^[The University of Sydney],
+    Carissa Chen^[The University of Sydney].
     <br/>
-Last modified: 14 May, 2018.
+Last modified: 22 Sept, 2021.
 
 ## Overview
 
 ### Description
 
-Along with the topic of your workshop, include how students can expect
-to spend their time. For the description may also include information
-about what type of workshop it is (e.g. instructor-led live demo, lab,
-lecture + lab, etc.). Instructors are strongly recommended to provide
-completely worked examples for lab sessions, and a set of stand-alone
-notes that can be read and understood outside of the workshop.
+[Brief description of workship]
 
 ### Pre-requisites
 
@@ -59,7 +57,7 @@ List any _R_ / _Bioconductor_ packages that will be explicitly covered.
 
 ### Time outline
 
-An example for a 45-minute workshop:
+Structure of the 2-hour workshop:
 
 | Activity                     | Time |
 |------------------------------|------|
@@ -98,13 +96,72 @@ Some examples:
 * create xyz plots
 * evaluate xyz data for artifacts
 
-## Workshop
+## 1. Introduction
 
-Divide the workshop into sections (`## A Section`). Include
-fully-evaluated _R_ code chunks. Develop exercises and solutions, and
-anticipate that your audience will walk through the code with you, or
-work on the code idependently -- do not be too ambitious in the
-material that you present.
+General introduction to the advanced phenotyping course (e.g., summary of the introduction PPT, Carissa to fill?).
+
+## 2. Defining cellular identity
+
+### 2.1 Load libraries
+```{r}
+
+```
+
+### 2.2 Loading preprocessed data
+About the data... from [this paper](https://www.nature.com/articles/s41586-018-0414-6#additional-information). We provide the preprocessed version in this workshop. The original data can be access from GEO with the accession number XXXXXX.
+```{r}
+# code to load data 
+# we can also run some of the processing steps here (e.g., log transform, filter lowly expressed genes etc.)
+```
+
+### 2.3 Visualising the data
+```{r}
+# code to run PCA/UMAP/TSNE
+```
+
+### 2.3 Clustering the data
+```{r}
+# code to perform clustering of the data
+```
+
+
+### 2.3 Identifying the cell types
+
+Now, we want to identify a cluster to a cell type. This task is easy to apply when discrete and well-annotated cell types, i.e., those with well-known markers, are present in your data. The procedure becomes more challenging when we are met with a data with rare or unknown cell types or transitional cell states. Either way, the general idea is to find a set of genes that are expressed different in a cell compared to the rest of the cells in the dataset. Thus, gene sets must be identifying of the particular cell type of the cell.
+
+There are many methods
+
+#### Cepo to identify cell identity genes
+```{r}
+# Code to run Cepo
+```
+
+#### Examine expression of Cepo genes in the low dimensional space
+```{r}
+# Code to visualise markers
+```
+
+#### Violin plots
+
+Violin plots enable us to examine the distribution of the expression values associated with each cell in the clusters. The x-axis denote the clusters, and the y-axis represents the log-transformed gene expression of a given gene. Alternatives of violin plots are jitter and swarmplots, which unlike violin plots show each cell as a point.
+```{r}
+# Code to plot violin plot
+```
+
+#### Saving outputs
+Finally, we can save our marker gene analysis for use later. These top marker genes can be used to subset the data prior to performing classification of the data
+```{r}
+# Code to save top X genes 
+```
+
+## 3. Defining a trajectory
+
+## 4. Characterising a trajectory
+
+## 5. Cell-cell communication
+
+## 6. Conclusions and wrap-up
+
 
 
 
