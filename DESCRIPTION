@@ -1,0 +1,23 @@
+Package: scdneyAdvancedPhenotyping
+Title: Advanced Phenotyping using scdney
+Version: 0.1.0
+Authors@R: Sydney Precision Bioinformatics Alliance
+Description: Workshop for single-cell phenotyping analysis
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: 
+    Biobase,
+    SingleCellExperiment,
+    Cepo,
+    slingshot
+Suggests: 
+    knitr,
+    rmarkdown,
+    pkgdown
+URL: https://SydneyBioX.github.io/scdneyAdvancedPhenotyping/
+BugReports: https://github.com/SydneyBioX/scdneyAdvancedPhenotyping/issues/new/choose
+VignetteBuilder: knitr
+DockerImage: seandavi/buildabiocworkshop:latest
