@@ -34,8 +34,9 @@ jobs:
         run: |
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          sudo apt-get update
           sudo apt-get install default-libmysqlclient-dev
+          sudo -s eval "$sysreqs"
           
       - name: Install dependencies
         run: |
