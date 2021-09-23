@@ -3,6 +3,7 @@ on: [push, pull_request]
 env:
   cache-version: v1
   repo-name: yingxinlin/scdneyphenotyping
+  GITHUB_PAT: ${{ secrets.TOKEN }}
 
 jobs:
   job1:

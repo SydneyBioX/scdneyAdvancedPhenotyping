@@ -204,7 +204,7 @@ How we can use these top genes for classification.
 
 ## 3. Trajectory inference: How can I infer the trajectory for my data?
 
-### How to build a trajectory?
+### 3.1 How to build a trajectory?
 
 Construct a trajectory using `slingshot` on UMAP reduced dimension space.
 
@@ -277,7 +277,7 @@ ggplot() +
 + Do these orderings make sense given the cluster labels? Why?
 + Would specifying starting cluster (`start.clus`) or not impact our trajectory results?
 
-### How does the choice of dimensionality reduction affect the trajectory inference?
+### 3.2 How does the choice of dimensionality reduction affect the trajectory inference?
 
 ```{r}
 # Perform Slingshot analysis using TSNE
@@ -319,7 +319,7 @@ We can see that the trajectories the built based on UMAP and tSNE reduced dimens
 
 + Would dimension reduction using different number of selected features impact the trajecotry results?
 
-### How well do the pseudotime orderings correlate from different trajectory methods?
+### 3.3 How well do the pseudotime orderings correlate from different trajectory methods?
 
 Here we will use `monocle3` to construct the trajectory on the same UMAP space.
 
@@ -376,9 +376,9 @@ cor(monocle3_pseudotime, pseudotime_umap[, 1], use = "complete.obs")
 
 
 
-### Extension: RNA velocity vs trajectory pseudotime inference
+### 3.4 Extension: RNA velocity vs trajectory pseudotime inference
 
-```{r eval = FALSE}
+```{r cache=TRUE}
 library(velocyto.R)
 emat <- assay(sce, "spliced")
 nmat <- assay(sce, "unspliced")
@@ -400,8 +400,11 @@ length(intersect(rownames(emat), rownames(emat)))
 rvel.cd <- gene.relative.velocity.estimates(emat, nmat, deltaT = 1,
                                             kCells = 20, cell.dist = cell.dist,
                                             fit.quantile = 0.02, n.cores = 1)
+plotcol <- tableau_color_pal("Classic 10")(10)[as.factor(cluster.label)]
+names(plotcol) <- names(cluster.label)
+par(pty = "s")
 show.velocity.on.embedding.cor(emb, rvel.cd, n = 300, scale = 'sqrt',
-                               # cell.colors = ac(cell.colors, alpha=0.5), 
+                               cell.colors = ac(plotcol, alpha=0.5), 
                                cex = 0.8, arrow.scale = 5, show.grid.flow = TRUE,
                                min.grid.cell.mass = 0.5, grid.n = 40,
                                arrow.lwd = 1, do.par = F, cell.border.alpha = 0.1,
@@ -412,7 +415,7 @@ show.velocity.on.embedding.cor(emb, rvel.cd, n = 300, scale = 'sqrt',
 ## 4. How can I characterise the trajectory of the data?
 
 
-### What are the marker genes associated with the different lineages/pseudotime?
+### Which genes are associated with the different lineages/pseudotime?
 
 
 ```{r}
