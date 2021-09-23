@@ -23,17 +23,22 @@ Imports:
     reshape2,
     ggridges,
     monocle3,
+    velocyto.R,
     scran,
     igraph,
-    ggpubr
+    ggpubr,
+    tradeSeq,
+    DT
 Suggests: 
     knitr,
     rmarkdown,
-    pkgdown
+    pkgdown,
+    spdep
 URL: https://SydneyBioX.github.io/scdneyAdvancedPhenotyping/
 BugReports: https://github.com/SydneyBioX/scdneyAdvancedPhenotyping/issues/new/choose
 VignetteBuilder: knitr
 DockerImage: yingxinlin/scdneyphenotyping:latest
 Remotes: 
+    PYangLab/Cepo,
     cole-trapnell-lab/monocle3,
     velocyto-team/velocyto.R

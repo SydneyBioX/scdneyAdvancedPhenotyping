@@ -16,10 +16,10 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  warning = FALSE,
-  message = FALSE,
-  comment = "#>"
+    collapse = TRUE,
+    warning = FALSE,
+    message = FALSE,
+    comment = "#>"
 )
 set.seed(2021)
 ```
@@ -112,7 +112,7 @@ library(ggridges)
 library(reshape2)
 library(scran)
 library(ggpubr)
-
+library(DT)
 theme_set(theme_bw())
 ```
 
@@ -239,11 +239,11 @@ df_toPlot <- cbind(df_toPlot, pseudotime_umap)
 
 curves <- slingCurves(slingshot_umap, as.df = TRUE)
 ggplot() +
-  geom_point(data = df_toPlot, aes(x = UMAP1, y = UMAP2, color = ClusterName)) +
-  geom_path(data = curves,
-            aes(x = Dim.1, y = Dim.2, group = Lineage)) +
-  scale_color_tableau(palette = "Classic 10") +
-  theme(aspect.ratio = 1)
+    geom_point(data = df_toPlot, aes(x = UMAP1, y = UMAP2, color = ClusterName)) +
+    geom_path(data = curves,
+              aes(x = Dim.1, y = Dim.2, group = Lineage)) +
+    scale_color_tableau(palette = "Classic 10") +
+    theme(aspect.ratio = 1)
 ```
 
 
@@ -252,23 +252,23 @@ ggplot() +
 df_toPlot2 <- reshape2::melt(df_toPlot, id = c("UMAP1", "UMAP2", "ClusterName"))
 colnames(df_toPlot2) <- c("UMAP1", "UMAP2", "ClusterName", "Lineages", "Pseudotime")
 ggplot() +
-  geom_point(data = df_toPlot2, aes(x = UMAP1, y = UMAP2, color = Pseudotime)) +
-  geom_path(data = curves,
-            aes(x = Dim.1, y = Dim.2, group = Lineage)) +
-  scale_color_viridis_c() +
-  theme(aspect.ratio = 1) +
-  facet_wrap(~Lineages)
+    geom_point(data = df_toPlot2, aes(x = UMAP1, y = UMAP2, color = Pseudotime)) +
+    geom_path(data = curves,
+              aes(x = Dim.1, y = Dim.2, group = Lineage)) +
+    scale_color_viridis_c() +
+    theme(aspect.ratio = 1) +
+    facet_wrap(~Lineages)
 ```
 
 
 ```{r}
 ggplot() +
-  geom_density_ridges2(data = df_toPlot2, 
-                       aes(x = Pseudotime, y = ClusterName, fill = ClusterName), 
-                       alpha = 0.5) +
-  scale_fill_tableau(palette = "Classic 10") +
-  theme(aspect.ratio = 1, legend.position = "bottom") +
-  facet_wrap(~Lineages) 
+    geom_density_ridges2(data = df_toPlot2, 
+                         aes(x = Pseudotime, y = ClusterName, fill = ClusterName), 
+                         alpha = 0.5) +
+    scale_fill_tableau(palette = "Classic 10") +
+    theme(aspect.ratio = 1, legend.position = "bottom") +
+    facet_wrap(~Lineages) 
 ```
 
 
@@ -298,11 +298,11 @@ curves_tsne <- slingCurves(slingshot_tsne, as.df = TRUE)
 pseudotime_tsne <- slingshot::slingPseudotime(slingshot_tsne)
 
 ggplot() +
-  geom_point(data = df_toPlot, aes(x = TSNE1, y = TSNE2, color = ClusterName)) +
-  geom_path(data = curves_tsne,
-            aes(x = Dim.1, y = Dim.2, group = Lineage)) +
-  scale_color_tableau(palette = "Classic 10") +
-  theme(aspect.ratio = 1)
+    geom_point(data = df_toPlot, aes(x = TSNE1, y = TSNE2, color = ClusterName)) +
+    geom_path(data = curves_tsne,
+              aes(x = Dim.1, y = Dim.2, group = Lineage)) +
+    scale_color_tableau(palette = "Classic 10") +
+    theme(aspect.ratio = 1)
 ```
 
 
@@ -335,16 +335,16 @@ plot_cells(cds,
            label_groups_by_cluster = FALSE,
            label_leaves = FALSE,
            label_branch_points = FALSE) +
-  scale_color_tableau(palette = "Classic 10") +
-  theme(aspect.ratio = 1)
+    scale_color_tableau(palette = "Classic 10") +
+    theme(aspect.ratio = 1)
 
 
 get_earliest_principal_node <- function(cds, coldata_name, start.clust){
-  cell_ids <- which(colData(cds)[, coldata_name] == start.clust)
-  closest_vertex <- cds@principal_graph_aux[["UMAP"]]$pr_graph_cell_proj_closest_vertex
-  closest_vertex <- as.matrix(closest_vertex[colnames(cds), ])
-  root_pr_nodes <- igraph::V(principal_graph(cds)[["UMAP"]])$name[as.numeric(names(which.max(table(closest_vertex[cell_ids,]))))]
-  root_pr_nodes
+    cell_ids <- which(colData(cds)[, coldata_name] == start.clust)
+    closest_vertex <- cds@principal_graph_aux[["UMAP"]]$pr_graph_cell_proj_closest_vertex
+    closest_vertex <- as.matrix(closest_vertex[colnames(cds), ])
+    root_pr_nodes <- igraph::V(principal_graph(cds)[["UMAP"]])$name[as.numeric(names(which.max(table(closest_vertex[cell_ids,]))))]
+    root_pr_nodes
 }
 
 # Set the root cells
@@ -361,7 +361,7 @@ plot_cells(cds,
            label_leaves = FALSE,
            label_branch_points = FALSE,
            graph_label_size = 1.5) +
-  theme(aspect.ratio = 1)
+    theme(aspect.ratio = 1)
 
 monocle3_pseudotime <- cds@principal_graph_aux[["UMAP"]]$pseudotime
 ```
@@ -375,8 +375,9 @@ cor(monocle3_pseudotime, pseudotime_umap[, 1], use = "complete.obs")
 
 
 
-
 ### 3.4 Extension: RNA velocity vs trajectory pseudotime inference
+
+(This requires XX mins to run)
 
 ```{r cache=TRUE}
 library(velocyto.R)
@@ -415,28 +416,61 @@ show.velocity.on.embedding.cor(emb, rvel.cd, n = 300, scale = 'sqrt',
 ## 4. How can I characterise the trajectory of the data?
 
 
-### Which genes are associated with the different lineages/pseudotime?
+### 4.1 Which genes are associated across pseudotime within a lineage?
 
 
-```{r}
+
+```{r eval = FALSE}
 ## TradeSeq
+library(tradeSeq)
+
+# Only look at the 643 Cepo genes 
+
+slingshot_umap <- slingshot_umap[!duplicated(rownames(slingshot_umap)),]
+slingshot_umap <- fitGAM(slingshot_umap,
+                         genes = cepoGenes,
+                         nknots = 6,
+                         verbose = TRUE,
+                         parallel = FALSE,
+                         sce = TRUE,
+                         family = "nb",
+                         gcv = FALSE)
+table(rowData(slingshot_umap)$tradeSeq$converged)
+```
+
+```{r eval = FALSE}
+assoRes <- associationTest(slingshot_umap, global = TRUE, lineages = TRUE)
+assoRes <- assoRes[cepoGenes,]
+assoRes <- assoRes[order(assoRes$waldStat, decreasing = TRUE),]
+datatable(assoRes) %>%
+    formatSignif(which(sapply(assoRes, is, 'numeric')), digits = 3)
 ```
 
 
-### What are the different patterns of gene expression along pseudotime?
+
+```{r eval = FALSE}
+plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Lingo2"))
+```
+
+
+
+
+### 4.2 What are the different patterns of gene expression across pseudotime between lineages?
+
+```{r eval = FALSE}
+patternRes <- patternTest(slingshot_res)
+patternRes <- patternRes[cepoGenes,]
+patternRes <- patternRes[order(patternRes$waldStat, decreasing = TRUE),]
+```
+
+### 4.3 Are these patterns associated with the pathways associated with the trajectory DE?
 
 ```{r}
 
 ```
 
-### Are these patterns associated with the pathways associated with the trajectory DE?
 
-```{r}
-
-```
-
-
-### What does gene pair correlation change across lineages? 
+### 4.4 What does gene pair correlation change across lineages? 
 
 ```{r}
 # scHOT
