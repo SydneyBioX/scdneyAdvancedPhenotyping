@@ -420,7 +420,7 @@ show.velocity.on.embedding.cor(emb, rvel.cd, n = 300, scale = 'sqrt',
 
 
 
-```{r eval = FALSE}
+```{r}
 ## TradeSeq
 library(tradeSeq)
 
@@ -438,7 +438,7 @@ slingshot_umap <- fitGAM(slingshot_umap,
 table(rowData(slingshot_umap)$tradeSeq$converged)
 ```
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 assoRes <- associationTest(slingshot_umap, global = TRUE, lineages = TRUE)
 assoRes <- assoRes[cepoGenes,]
 assoRes <- assoRes[order(assoRes$waldStat, decreasing = TRUE),]
@@ -448,7 +448,7 @@ datatable(assoRes) %>%
 
 
 
-```{r eval = FALSE}
+```{r eval = TRUE}
 plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Lingo2"))
 ```
 
