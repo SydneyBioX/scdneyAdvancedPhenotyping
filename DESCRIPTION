@@ -28,7 +28,10 @@ Imports:
     igraph,
     ggpubr,
     tradeSeq,
-    DT
+    DT,
+    clusterProfiler,
+    org.Mm.eg.db,
+    clusterExperiment
 Suggests: 
     knitr,
     rmarkdown,

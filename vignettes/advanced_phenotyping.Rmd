@@ -117,17 +117,15 @@ theme_set(theme_bw())
 ```
 
 ### 2.2 Loading preprocessed data
-About the data... from [this paper](https://www.nature.com/articles/s41586-018-0414-6#additional-information). We provide the preprocessed version in this workshop. The original data can be access from GEO with the accession number XXXXXX.
+We will use the dataset from [this paper](https://www.nature.com/articles/s41586-018-0414-6#additional-information). We provide the preprocessed version in this workshop. The original data can be access from GEO with the accession number XXXXXX.
 
 ```{r}
 # code to load data 
-# we can also run some of the processing steps here (e.g., log transform, filter lowly expressed genes etc.)
 sce <- readRDS("data/sce_DentateGyrus_hippocampus.rds")
 sce <- scater::logNormCounts(sce)
 ```
 
 ### 2.3 Visualising the data
-
 
 ```{r fig.height=6}
 # code to run PCA/UMAP/TSNE
@@ -145,19 +143,15 @@ p4 <- plotDiffusionMap(sce, colour_by = "ClusterName") + ggtitle("643 Cepo genes
 
 ggarrange(p1, p2, p3, p4, nrow = 2, ncol = 2, common.legend = TRUE)
 ```
-[give some example marker genes for each cell type]
 
 ### 2.3 Clustering the data
 ```{r}
 # code to perform clustering of the data
 ```
 
-
 ### 2.3 Identifying the cell types
 
 Now, we want to identify a cluster to a cell type. This task is easy to apply when discrete and well-annotated cell types, i.e., those with well-known markers, are present in your data. The procedure becomes more challenging when we are met with a data with rare or unknown cell types or transitional cell states. Either way, the general idea is to find a set of genes that are expressed different in a cell compared to the rest of the cells in the dataset. Thus, gene sets must be identifying of the particular cell type of the cell.
-
-There are many methods
 
 #### Cepo to identify cell identity genes
 
@@ -179,8 +173,6 @@ p4 = plotDiffusionMap(sce, colour_by = "ClusterName") + ggtitle("643 Cepo genes"
 ggarrange(p1, p2, p3, p4, nrow = 2, ncol = 2, common.legend = TRUE)
 ```
 
-Manual annotation using markers (and check original label)
-
 #### Examine expression of Cepo genes in the low dimensional space
 
 ```{r}
@@ -195,12 +187,11 @@ Violin plots enable us to examine the distribution of the expression values asso
 ```
 
 #### Saving outputs
-Finally, we can save our marker gene analysis for use later. These top marker genes can be used to subset the data prior to performing classification of the data
+Finally, we can save our marker gene analysis for use later. 
 ```{r}
 # Code to save top X genes 
 ```
 
-How we can use these top genes for classification. 
 
 ## 3. Trajectory inference: How can I infer the trajectory for my data?
 
