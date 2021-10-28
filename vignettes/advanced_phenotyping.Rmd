@@ -598,6 +598,7 @@ scHOT_obj@scHOT_output <- scHOT_obj@scHOT_output[order(scHOT_obj@scHOT_output$FD
 ```
 
 Finally, we can visualise the results of the top 5 significant genes that demonstrate differential correlation across our pseudotime. 
+
 ```{r}
 plotHigherOrderSequence(scHOT_obj, rownames(scHOT_obj@scHOT_output)[1:5])
 ```
@@ -605,7 +606,63 @@ plotHigherOrderSequence(scHOT_obj, rownames(scHOT_obj@scHOT_output)[1:5])
 ## 5. Cell-cell communication
 
 ```{r}
+library(CellChat)
+cellchat <- createCellChat(object = logcounts(sce), 
+                           meta = data.frame(colData(sce)), 
+                           group.by = "ClusterName")
 
+cellchat <- setIdent(cellchat, ident.use = "ClusterName") # set "labels" as default cell identity
+levels(cellchat@idents) # show factor levels of the cell labels
+```
+
+
+
+```{r}
+cellchat@DB <- CellChatDB.mouse # Set CellChat Database
+cellchat <- subsetData(cellchat)
+
+cellchat <- identifyOverExpressedGenes(cellchat)
+cellchat <- identifyOverExpressedInteractions(cellchat)
+
+
+```
+
+
+
+
+
+```{r}
+#Compute the communication probability and infer cellular communication network
+cellchat <- computeCommunProb(cellchat)
+# Filter out the cell-cell communication if there are only few number of cells in certain cell groups
+cellchat <- filterCommunication(cellchat, min.cells = 10)
+#Infer the cell-cell communication at a signaling pathway level
+cellchat <- computeCommunProbPathway(cellchat)
+```
+
+```{r}
+cellchat <- aggregateNet(cellchat)
+```
+
+```{r}
+groupSize <- as.numeric(table(cellchat@idents))
+par(mfrow = c(1,2), xpd=TRUE)
+netVisual_circle(cellchat@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
+netVisual_circle(cellchat@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
+```
+
+
+```{r}
+pathways.show <- c("NCAM") 
+# Hierarchy plot
+# Here we define `vertex.receive` so that the left portion of the hierarchy plot shows signaling to fibroblast and the right portion shows signaling to immune cells 
+vertex.receiver = seq(1,4) # a numeric vector. 
+netVisual_aggregate(cellchat, signaling = pathways.show,  vertex.receiver = vertex.receiver)
+netVisual_heatmap(cellchat, signaling = pathways.show, color.heatmap = "Reds")
+```
+
+```{r}
+netVisual_bubble(cellchat, sources.use = 1, targets.use = 2:7, remove.isolate = FALSE)
 ```
 
 
