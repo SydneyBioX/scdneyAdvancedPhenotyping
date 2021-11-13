@@ -18,7 +18,9 @@ if(BiocManager::version() != "3.14"){
 
 
 std_pkgs <- c(
-  "devtools", "edgeR",
+  "devtools", 
+  "batchelor" , "pcaMethods", # dependencies for other packages , and need be installed first
+  "edgeR",
   "ggpubr", "MAST", 
   "plyr", "Rtsne", 
   "scales", "scater", "SingleCellExperiment",
@@ -26,14 +28,24 @@ std_pkgs <- c(
   "scran", "tidyverse", 
   "viridis", "monocle",
   "ggthemes",  "ggridges", "reshape2" , "ggpubr", 
-  "DT", 
-  "DescTools")
+  "DT",   "DescTools", 
+  "tradeSeq",
+  "clusterExperiment",
+  "clusterProfiler",
+  "org.Mm.eg.db"
+  )
 
-gh_pkgs <- c("MarioniLab/DropletUtils",
+gh_pkgs <- c( "theislab/destiny", # dependencies for other packages , and need be installed first
+              "MarioniLab/DropletUtils",
+              "jokergoo/ComplexHeatmap",
+              
              "SydneyBioX/scdney",
              "SydneyBioX/scMerge",
              "SydneyBioX/scClassify",
-             "theislab/destiny")
+            
+             "cole-trapnell-lab/monocle3",
+             "velocyto-team/velocyto.R",
+             "sqjin/CellChat")
 
 builtins <- c(std_pkgs, gh_pkgs)
 
