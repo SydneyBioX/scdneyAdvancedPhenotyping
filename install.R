@@ -22,7 +22,7 @@ std_pkgs <- c(
   "ggpubr", "MAST", 
   "plyr", "Rtsne", 
   "scales", "scater", "SingleCellExperiment",
-  "Cepo", "slingshot" , 
+  "Cepo", "slingshot" , "UpSetR", 
   "scran", "tidyverse", 
   "viridis", "monocle",
   "ggthemes",  "ggridges", "reshape2" , "ggpubr", 
