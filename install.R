@@ -32,7 +32,8 @@ std_pkgs <- c(
 gh_pkgs <- c("MarioniLab/DropletUtils",
              "SydneyBioX/scdney",
              "SydneyBioX/scMerge",
-             "SydneyBioX/scClassify")
+             "SydneyBioX/scClassify",
+             "theislab/destiny")
 
 builtins <- c(std_pkgs, gh_pkgs)
 
