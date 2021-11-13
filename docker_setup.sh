@@ -11,10 +11,8 @@ git clone https://github.com/SydneyBioX/scdneyAdvancedPhenotyping /home/gittmp/
 
 ## wget all data files from Google Cloud Storage into /home/CPC/
 #wget https://storage.googleapis.com/scp_data/data.zip -P /home/gittmp/
+wget https://www.dropbox.com/s/2gbqeqqu3ufiz1u/sce_DentateGyrus_hippocampus.rds -P /home/gittmp/
 
-# cd /home/gittmp/ && unzip ./data.zip
-# rm -rf /home/gittmp/__MACOSX
-# rm -rf /home/gittmp/data.zip
 ls /home/
 ls /home/gittmp/
   
