@@ -97,6 +97,7 @@ library(scran)
 library(ggpubr)
 library(DT)
 library(UpSetR)
+library(destiny)
 theme_set(theme_bw())
 ```
 
