@@ -5,8 +5,8 @@ sudo apt-get update
 sudo apt-get install libjpeg-dev
 
 #needed by the velocity R package 
-sudo apt-get install libboost-dev 
-sudo apt-get install libboost-all-dev
+sudo apt-get install -y libboost-dev 
+sudo apt-get install -y libboost-all-dev
 ## sudo apt-get -y install r-base-dev
 
 ## Make a tmp folder and git clone
