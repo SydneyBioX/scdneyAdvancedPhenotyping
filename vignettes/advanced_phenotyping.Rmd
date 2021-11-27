@@ -15,6 +15,26 @@ vignette: >
 ---
 
 
+<!-- Teaching guide on Zoom  [Nov 29 Version] -->
+<!--  -->
+<!-- First data analysis session -->
+<!-- Zoom coordinator [Adam] -->
+<!-- Room on cloud access issues [Yue] -->
+<!-- Room for R issues including ggplot [Carissa] -->
+<!-- Room for foundational single cell analysis [Andy] -->
+
+<!-- Second data analysis session -->
+<!-- Zoom coordinator [Adam] -->
+<!-- Room for R issues including ggplot [Yue / Carissa / Adam] -->
+<!-- Room for building the trajectory - issue on Section 2.2/2.3 [Hani] -->
+
+<!-- Third data analysis session -->
+<!-- Zoom coordinator / Main room [Ellis] -->
+<!-- Room for R debugging issues including ggplot [Yue / Carissa / Adam] -->
+<!-- Breakout room 1 [Hani / Jean] -->
+<!-- Expert room on [Yingxin / Pengyi] -->
+
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -29,18 +49,41 @@ set.seed(2021)
 
 ### Description
 
-Cellular phenotyping broadly refers to all procedures that aim to identify the identity and/or state of cells, as well as the relationship between cells. This workshop, "Advanced Cellular Phenotyping", is the third workshop in the "Single cell data integrative analysis" workshop. In this workshop, we discusses challenges and analytical focus associated with cellular phenotyping. 
+Cellular phenotyping broadly refers to all procedures that aim to identify the identity and/or state of cells, as well as the relationship between cells. This workshop, "Advanced Cellular Phenotyping", is the third workshop in the "Single cell data integrative analysis" workshop series. Here, we discusses challenges and analytical focus associated with cellular phenotyping. The overall *learning goals* of the workshop is to understand the two common approaches to phenotype the cell: trajectory analysis and cell-cell interaction. We will also discuss the general analytical strategies associated with phenotyping single cells and future perspectives.
 
-### Pre-requisites
 
-The workshop requires basic knowledge of the following topics:
+<br><br>
+<div class="aimbox"> 
+### <span class="fa-stack fa"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-pencil-alt fa-stack-1x fa-inverse"></i></span> Preparation and assumed knowledge
+- Knowledge of R syntax
+- Basic knowledge in [single cell data analysis](https://bioconductor.org/books/release/OSCA/index.html) 
+- Familiarity with the [SingleCellExperiment class](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html) 
+- Familiarity with our previous workshop vignette on [Introduction to Single Cell RNA-seq Analysis](https://sydneybiox.github.io/BIS2019_SC/) 
+- Relevant background reading for the workshop can be found in the links above. 
 
-* Knowledge of R syntax
-* Basic knowledge in [single cell data analysis](https://bioconductor.org/books/release/OSCA/index.html)
-* Familiarity with the [SingleCellExperiment class](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html)
-* Familiarity with our previous workshop vignette on [Introduction to Single Cell RNA-seq Analysis](https://sydneybiox.github.io/BIS2019_SC/)
+### <span class="fa-stack fa"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-location-arrow fa-stack-1x fa-inverse"></i></span> Learning objectives
 
-Relevant background reading for the workshop can be found in the links above.
+- describe various strategies for cellular phenotyping
+- identify different workflows to build trajectory including calculate pseudo-times
+- generate appropriate graphics to visualise the trajectories and expression of genes
+- understand the different trajectory characterisation approaches including differentially expressed genes across trajectories, 
+- evaluate the single cell data to identify genes that distinguish trajectories and ligand-receptor interactions that distinguish cell types
+- [optional] identify cell-cell interactions in a single cell data and understand how cell-cell communication can be used to distinguish cell types
+
+</div>
+
+<br><br>
+
+<!-- ### Pre-requisites -->
+
+<!-- The workshop requires basic knowledge of the following topics: -->
+
+<!-- * Knowledge of R syntax -->
+<!-- * Basic knowledge in [single cell data analysis](https://bioconductor.org/books/release/OSCA/index.html) -->
+<!-- * Familiarity with the [SingleCellExperiment class](https://www.bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html) -->
+<!-- * Familiarity with our previous workshop vignette on [Introduction to Single Cell RNA-seq Analysis](https://sydneybiox.github.io/BIS2019_SC/) -->
+
+<!-- Relevant background reading for the workshop can be found in the links above. -->
 
 ### Time outline
 
@@ -48,28 +91,12 @@ Structure of the 2-hour workshop:
 
 | Activity                     | Time |
 |------------------------------|------|
-| Accessing the cloud          | 5m   |
 | Introduction                 | 10m  |
-| Building a trajectory        | 40m  |
-| Characterizing the trajectory| 40m  |
-| Cell-cell communication      | 20m  |
-| Concluding remarks           | 5m   |
-
-### Workshop goals and objectives
-
-The overall *learning goals* of the workshop is to understand the basic workflows of two common approaches to phenotype the cell: trajectory analysis and cell-cell interaction. We will also discuss the general challenges associated with phenotyping single cells and future perspectives.
-
-### Learning goals
-
-* describe various ways to phenotype single cells 
-* identify different workflows to build and characterize a trajectory
-* understand how cell-cell communication can be used to distinguish cell types
-
-### Learning objectives
-
-* analyze a single cell RNA-seq data to build a trajectory, calculate pseudo-times, find differentially expressed genes across trajectories, and identify cell-cell interactions
-* create plots to visualise the trajectories and expression of genes
-* evaluate the single cell data to identify genes that distinguish trajectories and ligand-receptor interactions that distinguish cell types
+| Building a trajectory        | 30m  |
+| Characterizing the trajectory| 30m  |
+| Assessing the trajectory     | 40m  |
+| Cell-cell communication      | 10m  |
+| Concluding remarks           |      |
 
 ## 1. Introduction
 
@@ -115,7 +142,7 @@ We will use the mouse hippocampus scRNA-seq dataset from [La Manno et al. (2018)
 
 ```{r}
 # code to load data 
-sce <- readRDS("data/sce_DentateGyrus_hippocampus.rds")
+sce <- readRDS("~/data/sce_DentateGyrus_hippocampus.rds")
 sce <- scater::logNormCounts(sce)
 ```
 
@@ -181,9 +208,17 @@ p4 = plotDiffusionMap(sce, colour_by = "ClusterName") + ggtitle("643 Cepo genes"
 ggarrange(p1, p2, p3, p4, nrow = 2, ncol = 2, common.legend = TRUE)
 ```
 
-<div class="alert alert-info">
-  <strong>Comments:</strong> Running the dimensionality reduction with the data subsetted for the differentially stable genes reveals (using a quick visual interpretation) a trajectory in the PCA space that is more consistent with those observed in UMAP, TSNE, and DM. 
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation:</strong>
+Running the dimensionality reduction with the data subsetted for the differentially stable genes reveals (using a quick visual interpretation) a trajectory in the PCA space that is more consistent with those observed in UMAP, TSNE, and DM.
 </div>
+
+<!-- <div class="alert alert-info"> -->
+<!-- <strong>Interpretation::</strong> Running the dimensionality reduction with the data subsetted for the differentially stable genes reveals (using a quick visual interpretation) a trajectory in the PCA space that is more consistent with those observed in UMAP, TSNE, and DM.  -->
+<!-- </div> -->
 
 **Step 3/4: Creating a lineage structure and psuedo time inference**
 
@@ -237,9 +272,17 @@ ggplot() +
   theme(aspect.ratio = 1)
 ```
 
-<div class="alert alert-info">
+
+<!-- <div class="alert alert-info"> -->
+
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation:</strong>
   **Interpretation:** Note that as expected we can see a total of three lineages that has been identified by slingshot, and the first bifurcation occurs at the junction of `Nbl1` and `Nbl2` and a second bifurcation at `CA` to give three terminal cell types, `CA1-Sub`, `CA2-3-4`, and `Granule`.
 </div>
+
 
 #### (c) Visualisation the inferred pseudotimes 
 
@@ -273,9 +316,13 @@ ggplot() +
 
 For users wanting to explore alternative methods to build the trajectory, please refer to the [dynverse framework](https://dynverse.org/), which provides a uniform interface to run more than 50 trajectory inference methods.
 
-<div class="alert alert-info">
+<!-- <div class="alert alert-info"> -->
 
-**Discussion:** 
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion::</strong>
 
 + Do these orderings make sense given the cluster labels? Why?
 + Would specifying starting cluster (`start.clus`) or not impact our trajectory results?
@@ -319,7 +366,15 @@ ggplot() +
   theme(aspect.ratio = 1)
 ```
 
-**Interpretation:** We can see that the resulting trajectory is similar to before and we are able to identify three distinct lineages. By generating a **scatter plot** of the correlation between the inferred pseudotime values, we can see that the trajectories the built based on UMAP and tSNE reduced dimension space are highly correlated with each other (cor > 0.99). We illustrate the results for `Lineage 1`.
+
+
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation::</strong>
+We can see that the resulting trajectory is similar to before and we are able to identify three distinct lineages. By generating a **scatter plot** of the correlation between the inferred pseudotime values, we can see that the trajectories the built based on UMAP and tSNE reduced dimension space are highly correlated with each other (cor > 0.99). We illustrate the results for `Lineage 1`.
+</div>
 
 ```{r}
 par(pty = "s")
@@ -327,9 +382,11 @@ plot(pseudotime_tsne[, 1], pseudotime_umap[, 1], ylab = "Pseudotime from UMAP", 
 cor(pseudotime_tsne[, 1], pseudotime_umap[, 1], use = "complete.obs")
 ```
 
-<div class="alert alert-info">
-
-**Discussion:**
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion::</strong>
 
 + As an additional exercise, would performing dimensionality reduction with a different set/number of selected features impact the trajectory results?
 
@@ -355,8 +412,15 @@ plot_cells(cds,
   theme(aspect.ratio = 1)
 ```
 
-**Interpretation:** Similar to the approach using `slingshot`, visualisation of the `monocle3` approach shows three distinct lineages, replicating two bifurcation points at `Nbl2` and `CA`.
+<!-- <strong>Interpretation:</strong> -->
 
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation:</strong>
+Similar to the approach using `slingshot`, visualisation of the `monocle3` approach shows three distinct lineages, replicating two bifurcation points at `Nbl2` and `CA`.
+</div>
 
 #### (c) Are the trajectory methods robust to the choice of "root cells"?
 
@@ -397,9 +461,16 @@ plot(monocle3_pseudotime, pseudotime_umap[, 1], xlab = "Monocle 3", ylab = "Slin
 cor(monocle3_pseudotime, pseudotime_umap[, 1], use = "complete.obs")
 ```
 
-**Discussion:** 
+<!-- Discussion -->
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion::</strong>
 
 + Can we use `order_cells` in `monocle3` if we do not know what the `root` cell type is?
+
+</div>
 
 ### 3.4 Extension: RNA velocity vs trajectory pseudotime inference [OPTIONAL]
 
@@ -424,13 +495,13 @@ nmat <- filter.genes.by.cluster.expression(nmat, cluster.label, min.max.cluster.
 # Using 3838 genes for velocity estimation
 length(intersect(rownames(emat), rownames(emat)))
 
-if (!file.exists("../output/velocyto_res.rds")) {
+if (!file.exists("~/output/velocyto_res.rds")) {
   rvel.cd <- gene.relative.velocity.estimates(emat, nmat, deltaT = 1,
                                               kCells = 20, cell.dist = cell.dist,
                                               fit.quantile = 0.02, n.cores = 1)
-  saveRDS(rvel.cd, file = "../output/velocyto_res.rds")
+  saveRDS(rvel.cd, file = "~/output/velocyto_res.rds")
 } else {
-  rvel.cd <- readRDS("../output/velocyto_res.rds")
+  rvel.cd <- readRDS("~/output/velocyto_res.rds")
 }
 ```
 
@@ -454,10 +525,16 @@ dev.off()
 ![](figures/velocity.pdf)
 
 
-
-**Discussion:** 
+<!-- Discussion -->
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion::</strong>
 
 + What is the distinction between RNA velocity and other types of trajectory pseudotime inference, and do they address the same questions?
+
+</div>
 
 ## 4. How can I characterise the trajectory of the data?
 
@@ -474,14 +551,21 @@ We can now being to further phenotype the trajectories by investigating the chan
 
 ### 4.1 Within a lineage, which genes are differentially expressed across a pseudotime?
 
-Using `tradeSeq` [Berge et al., 2020](https://www.nature.com/articles/s41467-020-14766-3) and our output of `slingshot`, we can find genes that are differentially expressed along one or multiple lineages in a trajectory. To reduce time, we perform the analysis using the set of differentially stable genes (643 genes) derived earlier. 
+Generalize additive model is one natural statistical model to detremine which gene expression is associated time. In statistics, a generalized additive model (GAM) is a generalized linear model in which the linear response variable depends linearly on unknown smooth functions of some predictor variables. One can consider GAMs as somewhere in between simple linear models and complex machine-learning techniques, allowing investigator to model non-linear data or more complex systems. The key focus in GAM is often on inference on the smooth functions. The model is typically written as 
+$$ y = \beta_0 + f(t) + \epsilon; \epsilon \sim N(0,\sigma^2)$$ where $t$ represent pseudoteim estimated from Section 3. The approach `tradeSeq` [Berge et al., 2020](https://www.nature.com/articles/s41467-020-14766-3) extended GAM to a negative bionomial-GAM (NA-GAM) model to detect genes that are differentially expressed along one or multiple lineages in a trajectory. In the interest of time, we perform the analysis using the set of differentially stable genes (643 genes) derived earlier in this workshop 
 
-The first step of the `tradeSeq` framework is to fit the NB-GAMs. One of the important parameters in fitting this model is the choice of knot number. This parameter indicates how complex the expression patterns are in the data, where a higher number of knots allows for more complex expression patterns. The most optimal choice of knots can be derived from using the `evaluteK` function. We have performed this for you and set `knots = 6` when fitting the NB-GAM. Note that if your data contains multiple conditions, you should fit individual smoothers for each condition using the argument `conditions`. `fitGAM` will take roughly 10 minutes to finish for this dataset. Alternatively, you can load the output we prerun instead.
+We fit the NB-GAMS using the functions in `tradeSeq`.  One of the important parameters in fitting this model is the choice of **knot number**. This parameter indicates how complex the expression patterns are in the data, where a higher number of knots allows for more complex expression patterns. The most optimal choice of knots can be derived from using the `evaluteK` function. 
+
+**Note:**
+
+    - We have performed this for you and set `knots = 6` when fitting the NB-GAM. 
+    - If your data contains multiple conditions, you should fit individual smoothers for each condition using the argument `conditions`. 
+    - `fitGAM` will take roughly 10 minutes to finish for this dataset. Alternatively, you can load the output we prerun instead.
 
 ```{r eval = TRUE}
 library(tradeSeq)
 slingshot_umap <- slingshot_umap[!duplicated(rownames(slingshot_umap)),]
-if (!file.exists("../output/slingshot_umap.rds")) {
+if (!file.exists("~/output/slingshot_umap.rds")) {
   slingshot_umap <- fitGAM(slingshot_umap,
                            genes = cepoGenes,
                            nknots = 6,
@@ -490,14 +574,16 @@ if (!file.exists("../output/slingshot_umap.rds")) {
                            sce = TRUE,
                            family = "nb",
                            gcv = FALSE)
-  saveRDS(slingshot_umap, file = "../output/slingshot_umap.rds")
+  saveRDS(slingshot_umap, file = "~/output/slingshot_umap.rds")
 } else {
-  slingshot_umap <- readRDS("../output/slingshot_umap.rds")
+  slingshot_umap <- readRDS("~/output/slingshot_umap.rds")
 }
 
 table(rowData(slingshot_umap)$tradeSeq$converged)
 ```
 
+
+**(a) Test for association**
 
 Next, using the fitted gene expressions, we can assess for significant changes in gene expression (i.e., differential expression) as a function of pseudotime within each lineage using the `associationTest` function. Importantly, setting `lienages = TRUE` will specify that the differential expression analysis should be performed for each lineage separately, as well as performing the test across all lineages simultaneously. Here, we will only focus on perform the association test on the Cepo selected gene.
 
@@ -508,7 +594,6 @@ datatable(assoRes) %>%
   formatSignif(which(sapply(assoRes, is, 'numeric')), digits = 3)
 ```
 
-We see there is a large overlap in DE genes between the three lineages (around 97%).
 
 ```{r}
 lineage1Genes <-  rownames(assoRes)[which(p.adjust(assoRes$pvalue_1, "fdr") <= 0.05)]
@@ -525,14 +610,24 @@ sapply(DEgenes, length)
 UpSetR::upset(UpSetR::fromList(DEgenes))
 ```
 
-We can visualise the gene expression of a DE gene to check that its expression indeed change over pseudotime within each lineage. As an example, we select `Lingo2`, a gene that has been found to be differentially expressed for all three lineages. 
+**(b) Visualization**
 
 ```{r eval = TRUE}
 plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Lingo2"))
 ```
 
-### 4.2 Which genes exhibit different patterns of gene expression across the pseudotime between lineages?
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation::</strong>
 
++ We see there is a large overlap in DE genes between the three lineages (around 97%).
++ From the graph, we can check whether the expression of an identified DE gene indeed change over pseudotime within each lineage. As an example, we select `Lingo2`, a gene that has been found to be differentially expressed for all three lineages. 
+</div>
+
+
+### 4.2 Which genes exhibit different patterns of gene expression across the pseudotime between lineages?
 Whilst the `associationTest` looks for genes that show differential expression across a pseudotime within a lineage, we can also look for genes that demonstrate different differential expression patterns across lineages through the `patternTest` function. For each gene, we can test whether its expression pattern differs between lineages. Here, we will only focus on perform the pattern test on the Cepo selected gene.
 
 ```{r eval = TRUE}
@@ -565,12 +660,12 @@ Note that the clustering uses the clusterExperiment package (Risso et al. 2018),
 library(clusterExperiment)
 nPointsClus <- 20
 
-if (!file.exists("../output/clusPat.rds")) {
+if (!file.exists("~/output/clusPat.rds")) {
   clusPat <- clusterExpressionPatterns(slingshot_umap, nPoints = nPointsClus,
                                        genes = rownames(patternRes))
-  saveRDS(clusPat, "../output/clusPat.rds")
+  saveRDS(clusPat, "~/output/clusPat.rds")
 } else {
-  clusPat <- readRDS("../output/clusPat.rds")
+  clusPat <- readRDS("~/output/clusPat.rds")
 }
 
 clusterLabels <- primaryCluster(clusPat$rsec)
@@ -688,7 +783,7 @@ There are two statistical higher order testing we can perform, controlled by the
 As an illustration, we will investigate whether there are gene pairs that demonstrate differential correlation across the pseudotime for each lineage. 
 
 ```{r}
-if(!file.exists("../output/scHOT_obj.rds")) {
+if(!file.exists("~/output/scHOT_obj.rds")) {
   scHOT_obj <- scHOT_buildFromMatrix(
     mat = logcounts(slingshot_umap)[,first_branch_cells],
     cellData = list(pseudotime = slingshot_umap$slingPseudotime_1[first_branch_cells]),
@@ -704,9 +799,9 @@ if(!file.exists("../output/scHOT_obj.rds")) {
                      numberPermutations = 50)
   
   scHOT_obj@scHOT_output <- scHOT_obj@scHOT_output[order(scHOT_obj@scHOT_output$FDREstimated),]
-  saveRDS(scHOT_obj, file = "../output/scHOT_obj.rds")
+  saveRDS(scHOT_obj, file = "~/output/scHOT_obj.rds")
 } else {
-  scHOT_obj <- readRDS("../output/scHOT_obj.rds")
+  scHOT_obj <- readRDS("~/output/scHOT_obj.rds")
 }
 
 ```
