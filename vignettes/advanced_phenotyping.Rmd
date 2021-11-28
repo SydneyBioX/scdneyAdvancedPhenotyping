@@ -104,10 +104,10 @@ Many biological processes manifest as a continuum of dynamic changes and diverse
 
 We define the process of phenotyping as any procedure that attempts to further characterize the identity and/or state of cells and the relationship between cells and is distinct from procedures relating to the pre-processing or clustering of the data. One of the most common and basic phenotyping procedure is cell type identification, which is a highly researched topic in single cell data analysis. We can further explore various characteristics of the cells by 
 
-+ (1) investigating where a cell lies along a trajectory, if the data demonstrates a pseudo-temporally ordered state; 
-+ (2) determining if there are multiple branches in the trajectory (which may associate with different cell type lineages); 
-+ (3) if the previous is true, distinguishing if certain gene expression programs are associated with a certain trajectory through differential expression analysis or gene set enrichment studies; and lastly 
-+ (4) investigating if a certain signalling patterns can be observe between cell types. 
+(1) investigating where a cell lies along a trajectory, if the data demonstrates a pseudo-temporally ordered state; 
+(2) determining if there are multiple branches in the trajectory (which may associate with different cell type lineages); 
+(3) if the previous is true, distinguishing if certain gene expression programs are associated with a certain trajectory through differential expression analysis or gene set enrichment studies; and lastly;
+(4) investigating if a certain signalling patterns can be observe between cell types. 
 Collectively, these efforts contribute towards phenotyping the data and obtaining a more descriptive characterization of the data at hand.
 
 
@@ -164,14 +164,21 @@ ggarrange(p1, p2, p3, p4, nrow = 2, ncol = 2, common.legend = TRUE)
 ```
 
 
-<div class="alert alert-info">
-  <strong>Comments:</strong> The visualisations in *Step 2.3* suggests the presence of a clear trajectory. Starting from the progenitor cells (neuroblasts; Nbl1 and Nbl2), there is bifurcation of the trajectory into the two major lineages: the dentate gyrus granule neurons ("granule") and pyramidal neurons ("CA").
+
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Interpretation:</strong>
+
+The visualisations in *Step 2.3* suggests the presence of a clear trajectory. Starting from the progenitor cells (neuroblasts; Nbl1 and Nbl2), there is bifurcation of the trajectory into the two major lineages: the dentate gyrus granule neurons ("granule") and pyramidal neurons ("CA").
+
 </div>
 
 
 ## 3. Trajectory inference: How can I infer the trajectory for my data?
 
-This section contains two parts. The first part focuses on the four key steps of building a trajectory and the second part focuses on quality assessment of the build trajectory. [DELETE ? The subsequent steps illustrates an example workflow to infer the trajectory that represents this branching structure in the data.] 
+This section contains two parts. The first part focuses on the four key steps of building a trajectory and the second part focuses on quality assessment of the build trajectory. 
 
 ### 3.1 Four key steps in building a trajectory
 
@@ -179,7 +186,7 @@ This section contains two parts. The first part focuses on the four key steps of
 
 One of the first step in building a trajectoryis to perform feature selection. Given the high dimensional nature of high throughput single cell data, oftentimes it is advantageous to select for genes that provide biologically relevant information and remove those that add noise to the data. There are many ways to perform feature selection in single cell data, reviewed [here](add_link). 
 
-In this workshop, we demonstrate feature selection using [differential stability](https://www.biorxiv.org/content/10.1101/2021.01.10.426138v1) from [Cepo](https://github.com/PYangLab/Cepo) [Can Cepo has a brank in SydneyBioX?] to choose the top 100 cell identity genes for each cell type. 
+In this workshop, we demonstrate feature selection using [differential stability](https://www.biorxiv.org/content/10.1101/2021.01.10.426138v1) from [Cepo](https://github.com/PYangLab/Cepo) to choose the top 100 cell identity genes for each cell type. 
 
 ```{r fig.height=6}
 cepo = Cepo::Cepo(logcounts(sce), sce$ClusterName, exprsPct = 0.05)
@@ -213,12 +220,11 @@ ggarrange(p1, p2, p3, p4, nrow = 2, ncol = 2, common.legend = TRUE)
   <i class="fa fa-circle fa-stack-2x"></i>
   <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
 </span> <strong>Interpretation:</strong>
+
 Running the dimensionality reduction with the data subsetted for the differentially stable genes reveals (using a quick visual interpretation) a trajectory in the PCA space that is more consistent with those observed in UMAP, TSNE, and DM.
+
 </div>
 
-<!-- <div class="alert alert-info"> -->
-<!-- <strong>Interpretation::</strong> Running the dimensionality reduction with the data subsetted for the differentially stable genes reveals (using a quick visual interpretation) a trajectory in the PCA space that is more consistent with those observed in UMAP, TSNE, and DM.  -->
-<!-- </div> -->
 
 **Step 3/4: Creating a lineage structure and psuedo time inference**
 
@@ -273,14 +279,13 @@ ggplot() +
 ```
 
 
-<!-- <div class="alert alert-info"> -->
 
 <div class="aimbox"> 
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
 </span> <strong>Interpretation:</strong>
-  **Interpretation:** Note that as expected we can see a total of three lineages that has been identified by slingshot, and the first bifurcation occurs at the junction of `Nbl1` and `Nbl2` and a second bifurcation at `CA` to give three terminal cell types, `CA1-Sub`, `CA2-3-4`, and `Granule`.
+  Note that as expected we can see a total of three lineages that has been identified by slingshot, and the first bifurcation occurs at the junction of `Nbl1` and `Nbl2` and a second bifurcation at `CA` to give three terminal cell types, `CA1-Sub`, `CA2-3-4`, and `Granule`.
 </div>
 
 
@@ -316,13 +321,13 @@ ggplot() +
 
 For users wanting to explore alternative methods to build the trajectory, please refer to the [dynverse framework](https://dynverse.org/), which provides a uniform interface to run more than 50 trajectory inference methods.
 
-<!-- <div class="alert alert-info"> -->
+
 
 <div class="aimbox"> 
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <span class="far fa-comment fa-stack-1x fa-inverse"></span>
-</span> <strong>Discussion::</strong>
+</span> <strong>Discussion:</strong>
 
 + Do these orderings make sense given the cluster labels? Why?
 + Would specifying starting cluster (`start.clus`) or not impact our trajectory results?
@@ -372,8 +377,10 @@ ggplot() +
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
-</span> <strong>Interpretation::</strong>
+</span> <strong>Interpretation:</strong>
+
 We can see that the resulting trajectory is similar to before and we are able to identify three distinct lineages. By generating a **scatter plot** of the correlation between the inferred pseudotime values, we can see that the trajectories the built based on UMAP and tSNE reduced dimension space are highly correlated with each other (cor > 0.99). We illustrate the results for `Lineage 1`.
+
 </div>
 
 ```{r}
@@ -386,7 +393,7 @@ cor(pseudotime_tsne[, 1], pseudotime_umap[, 1], use = "complete.obs")
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <span class="far fa-comment fa-stack-1x fa-inverse"></span>
-</span> <strong>Discussion::</strong>
+</span> <strong>Discussion:</strong>
 
 + As an additional exercise, would performing dimensionality reduction with a different set/number of selected features impact the trajectory results?
 
@@ -466,7 +473,7 @@ cor(monocle3_pseudotime, pseudotime_umap[, 1], use = "complete.obs")
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <span class="far fa-comment fa-stack-1x fa-inverse"></span>
-</span> <strong>Discussion::</strong>
+</span> <strong>Discussion:</strong>
 
 + Can we use `order_cells` in `monocle3` if we do not know what the `root` cell type is?
 
@@ -530,7 +537,7 @@ dev.off()
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <span class="far fa-comment fa-stack-1x fa-inverse"></span>
-</span> <strong>Discussion::</strong>
+</span> <strong>Discussion:</strong>
 
 + What is the distinction between RNA velocity and other types of trajectory pseudotime inference, and do they address the same questions?
 
@@ -551,16 +558,18 @@ We can now being to further phenotype the trajectories by investigating the chan
 
 ### 4.1 Within a lineage, which genes are differentially expressed across a pseudotime?
 
-Generalize additive model is one natural statistical model to detremine which gene expression is associated time. In statistics, a generalized additive model (GAM) is a generalized linear model in which the linear response variable depends linearly on unknown smooth functions of some predictor variables. One can consider GAMs as somewhere in between simple linear models and complex machine-learning techniques, allowing investigator to model non-linear data or more complex systems. The key focus in GAM is often on inference on the smooth functions. The model is typically written as 
-$$ y = \beta_0 + f(t) + \epsilon; \epsilon \sim N(0,\sigma^2)$$ where $t$ represent pseudoteim estimated from Section 3. The approach `tradeSeq` [Berge et al., 2020](https://www.nature.com/articles/s41467-020-14766-3) extended GAM to a negative bionomial-GAM (NA-GAM) model to detect genes that are differentially expressed along one or multiple lineages in a trajectory. In the interest of time, we perform the analysis using the set of differentially stable genes (643 genes) derived earlier in this workshop 
+**Background:** A suitable statistical model for determining which gene expression is related to pseudotime is the generalise additive model. A generalised additive model (GAM) in statistics is a generalised linear model in which the linear response variable is linearly dependent on unknown smooth functions of certain predictor variables. GAMs can be thought of as a bridge between simple linear models and advanced machine-learning techniques, allowing researchers to model non-linear data or more complex systems. In GAM, inference on smooth functions is frequently the main focus. The GAM model is typically written as 
+$$ y = \beta_0 + f(t) + \epsilon; \epsilon \sim N(0,\sigma^2)$$ where $t$ represent pseudotime estimated from Section 3. 
 
-We fit the NB-GAMS using the functions in `tradeSeq`.  One of the important parameters in fitting this model is the choice of **knot number**. This parameter indicates how complex the expression patterns are in the data, where a higher number of knots allows for more complex expression patterns. The most optimal choice of knots can be derived from using the `evaluteK` function. 
+The approach `tradeSeq` [Berge et al., 2020](https://www.nature.com/articles/s41467-020-14766-3) implement a negative bionomial-GAM (NA-GAM) model to detect genes that are differentially expressed along one or multiple lineages in a trajectory. The NB-GAMS model can be fitted using the functions in `tradeSeq`.  Here the choice of **knot number** is an important model parameters. This parameter specifies how complex the data expression patterns are, with a higher number of knots allowing for more intricate expression patterns. The most optimal choice of knots can be derived from using the `evaluteK` function. If your data contains many conditions, use the `conditions` option to fit individual smoothers for each condition.
 
-**Note:**
+**Computation:**
+In the interest of time, we suggest performing this analysis using
 
-    - We have performed this for you and set `knots = 6` when fitting the NB-GAM. 
-    - If your data contains multiple conditions, you should fit individual smoothers for each condition using the argument `conditions`. 
-    - `fitGAM` will take roughly 10 minutes to finish for this dataset. Alternatively, you can load the output we prerun instead.
+    - the set of differentially stable genes (643 genes) derived earlier in this workshop; and
+    - set `knots = 6` when fitting the NB-GAM. 
+
+This component is computationally intensive, and the 'fitGAM' process, as seen below, will take about ten minutes to complete. As an alternative, we recommend completing the rest of this tutorial with the prerun output and exploring this component as a post-workshop exercise.
 
 ```{r eval = TRUE}
 library(tradeSeq)
@@ -582,7 +591,6 @@ if (!file.exists("~/output/slingshot_umap.rds")) {
 table(rowData(slingshot_umap)$tradeSeq$converged)
 ```
 
-
 **(a) Test for association**
 
 Next, using the fitted gene expressions, we can assess for significant changes in gene expression (i.e., differential expression) as a function of pseudotime within each lineage using the `associationTest` function. Importantly, setting `lienages = TRUE` will specify that the differential expression analysis should be performed for each lineage separately, as well as performing the test across all lineages simultaneously. Here, we will only focus on perform the association test on the Cepo selected gene.
@@ -592,10 +600,8 @@ assoRes <- associationTest(slingshot_umap[cepoGenes, ], global = TRUE, lineages 
 assoRes <- assoRes[order(assoRes$waldStat, decreasing = TRUE),]
 datatable(assoRes) %>%
   formatSignif(which(sapply(assoRes, is, 'numeric')), digits = 3)
-```
 
-
-```{r}
+## extracting candidate from each lineage
 lineage1Genes <-  rownames(assoRes)[which(p.adjust(assoRes$pvalue_1, "fdr") <= 0.05)]
 lineage2Genes <-  rownames(assoRes)[which(p.adjust(assoRes$pvalue_2, "fdr") <= 0.05)]
 lineage3Genes <-  rownames(assoRes)[which(p.adjust(assoRes$pvalue_3, "fdr") <= 0.05)]
@@ -607,12 +613,13 @@ DEgenes = list(
   lineage3 = lineage3Genes
 )
 sapply(DEgenes, length)
-UpSetR::upset(UpSetR::fromList(DEgenes))
 ```
 
 **(b) Visualization**
 
 ```{r eval = TRUE}
+UpSetR::upset(UpSetR::fromList(DEgenes))
+
 plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Lingo2"))
 ```
 
@@ -620,39 +627,58 @@ plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Lingo2"))
 <span class="fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x"></i>
   <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
-</span> <strong>Interpretation::</strong>
+</span> <strong>Interpretation:</strong>
 
-+ We see there is a large overlap in DE genes between the three lineages (around 97%).
-+ From the graph, we can check whether the expression of an identified DE gene indeed change over pseudotime within each lineage. As an example, we select `Lingo2`, a gene that has been found to be differentially expressed for all three lineages. 
++ Based on the upset graphics, we see there is a large overlap in DE genes between the three lineages (around 97%).
++ From the pseudotime graph, we can check whether the expression of an identified DE gene indeed change over pseudotime within each lineage. As an example, we select `Lingo2`, a gene that has been found to be differentially expressed for all three lineages. 
 </div>
 
 
 ### 4.2 Which genes exhibit different patterns of gene expression across the pseudotime between lineages?
-Whilst the `associationTest` looks for genes that show differential expression across a pseudotime within a lineage, we can also look for genes that demonstrate different differential expression patterns across lineages through the `patternTest` function. For each gene, we can test whether its expression pattern differs between lineages. Here, we will only focus on perform the pattern test on the Cepo selected gene.
+
+We will identify genes that demonstrate different differential expression patterns across lineages using the wald test implemented in the `patternTest` function. This is accomplished by testing whether the expression pattern of each gene varies between lineages. As in Section 4.1, we will only focus on running the pattern test on the Cepo-selected gene.
+
+<!-- Whilst the `associationTest` looks for genes that show differential expression across a pseudotime within a lineage, we can also look for genes that demonstrate different differential expression patterns across lineages through the `patternTest` function. For each gene, we can test whether its expression pattern differs between lineages. Here, we will only focus on perform the pattern test on the Cepo selected gene. -->
+
 
 ```{r eval = TRUE}
 patternRes <- patternTest(slingshot_umap[cepoGenes,])
 patternRes <- patternRes[order(patternRes$waldStat, decreasing = TRUE),]
 datatable(patternRes) %>%
   formatSignif(which(sapply(patternRes, is, 'numeric')), digits = 3)
-```
 
-Note 592 of 643 genes demonstrate differential gene expression patterns between lineages.
-
-```{r}
+## detremine the number of candidate genes
 patternGenes <-  rownames(patternRes)[which(p.adjust(patternRes$pvalue, "fdr") <= 0.05)]
 length(patternGenes)
-```
 
-We can confirm this is the case by visualising the change in the expression of the most significant gene, `Cntnap5a`. 
-
-```{r eval = TRUE}
+## Assessing our results through visualization
 plotSmoothers(slingshot_umap, counts(slingshot_umap), gene = c("Cntnap5a"))
 ```
 
+
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <i class="far fa-chart-bar fa-stack-1x fa-inverse"></i>
+</span> <strong>Results \& interpretation:</strong>
+
++ We have 592 of 643 genes demonstrate differential gene expression patterns between lineages.
++ It is critical, like with any omics data study, to double-check our results using visualisation. For this question, we will visualise the change in the expression of the most important gene, `Cntnap5a`.
+</div>
+
+
 ### 4.3 Can we group the genes in terms of their gene expression patterns across the pseudotime?
 
-Using the `patternTest`, we have obtained a statistical significance for each gene, a value that reflects how significantly a gene's expression as a function of pseudotime is distinct between lineages. We can further cluster genes according to their expression pattern along the pseudotime for each lineage using the `clusterExpressionPattern` function from `tradeSeq`. The resulting output is a clustering label that denotes gene groups based on like gene expression profiles. The main arguments of the function are 1) the slingshot output, 2) `nPoints` which denotes the number of points along each lineage to cluster the genes, and 3) the `genes` to use in the clustering. More details of the implementation can be found in [this vignette](https://statomics.github.io/tradeSeq/articles/tradeSeq.html).
+
+Hypothesis testing ('patternTest') generates a value describe the degree to which a gene's expression as a function of pseudotime is distinct across lineages; however, it does not capture the diversity of pseudotime patterns among these genes. To this end, we can further cluster genes according to their expression pattern along the pseudotime for each lineage using the `clusterExpressionPattern` function from the `tradeSeq` package. The *resulting output* is a clustering label that denotes gene groups based on like gene expression profiles. 
+
+**Computation:**
+
+The *main arguments* of the function are 
+
+    1) the slingshot output, 
+    2) `nPoints` which denotes the number of points along each lineage to cluster the genes, and 
+    3) the `genes` to use in the clustering. More details of the implementation can be found in [this vignette](https://statomics.github.io/tradeSeq/articles/tradeSeq.html).
 
 Note that the clustering uses the clusterExperiment package (Risso et al. 2018), hence the user may select any clustering algorithm that’s built into that package (check the output of `clusterExperiment::listBuiltInFunctions()` on the command line to see available methods). `clusterExpressionPatterns` take a few minutes to run in our case, you can load our prerun results instead.
 
@@ -674,15 +700,11 @@ cUniq <- unique(clusterLabels)
 cUniq <- cUniq[!cUniq == -1] # remove unclustered genes
 ```
 
-After running the `clusterExpressionPatterns` function we can see that there are in total 52 clustering groups. Note that there are also 98 genes that have not been assigned to a cluster and may demonstrate unique gene expression patterns.
+The clustering results genreated from running the `clusterExpressionPatterns` function shows a total 52 clustering groups with 98 genes that have not been assigned to a cluster and may demonstrate unique gene expression patterns. We will also visualise the normalised expression patterns of genes from three clusters.
 
 ```{r}
 table(clusterLabels)
-```
 
-As an example, we will visualise the normalised expression patterns of genes from three clusters. Can you describe the various expression patterns? Note that there are two layers of differences: genes show (1) differential expression across a pseudotime within a lineage **and** (2) these differential expression patterns are significantly different between lineages. 
-
-```{r}
 ggCluster <- list()
 for (xx in 1:4) {
   cId <- which(clusterLabels == c(2,3,6,7)[[xx]])
@@ -711,13 +733,23 @@ for (xx in 1:4) {
 patchwork::wrap_plots(ggCluster, ncol = 4, nrow = 1)
 ```
 
-**Discussion:** 
+<!-- Discussion -->
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion:</strong>
+
++  Can you describe the various expression patterns? Note that there are two layers of differences: genes show (1) differential expression across a pseudotime within a lineage **and** (2) these differential expression patterns are significantly different between lineages. 
 
 + Would setting a greater number of `nPoints` (e.g., 40, 60, 80) change the clustering results? 
+</div>
 
-### 4.4 Are specific pathways or gene sets enriched in these gene groups?
 
-The output of the `clusterExpressionPatterns` function is clusters of genes. We can next investigate whether a specific set of genes are enriched in these gene groups that demonstrate a similar pattern of gene expression across a lineage using gene set over-representation (GO) analysis. As an example, we will investigate which gene sets are over-represented in cluster 2 (38 genes).
+### 4.4 What is the functional annotation for the various gene sets? 
+
+To establish the functional annotation of the various clusters of genes obtained in Section 4.3, it is similar to identifying whether specific pathways or gene sets is enriched in these clusters of genes. Here, we perform gene set over-representation (GO) analysis and illustrate this analysis by identify gene ontology gene sets that are over-represented in cluster 2 (38 genes). The results is shown in a table.
+
 
 ```{r}
 names(clusterLabels) <- rownames(clusPat$yhatScaled)
@@ -744,28 +776,36 @@ ego_res <- enrichGO(gene = eg$ENTREZID,
                     pvalueCutoff = 1,
                     qvalueCutoff = 1,
                     readable = TRUE)
-```
 
-We can visualise the results as a table.
-
-```{r}
+## generate results
 head(summary(ego_res))
 ```
 
-The `clusterProfiler::dotplot` function can be used to visualise the results for the top significant pathways as a dot plot where the size of the circle represents the number of genes identified for the pathway of interest and the color of the function denotes the level of significance. 
+
+**Visualization:** The `clusterProfiler::dotplot` function can be used to visualise the results for the top significant pathways as a dot plot where the size of the circle represents the number of genes identified for the pathway of interest and the color of the function denotes the level of significance. 
+
 
 ```{r}
 dotplot(ego_res)
 ```
 
-**Discussion:** 
+<div class="aimbox"> 
+<span class="fa-stack fa-lg">
+  <i class="fa fa-circle fa-stack-2x"></i>
+  <span class="far fa-comment fa-stack-1x fa-inverse"></span>
+</span> <strong>Discussion:</strong>
++ What are the top enriched pathways from the gene set over-representation analysis? 
++ Are the results in line with what you expect?
+</div>
 
-+ What are the top enriched pathways from the gene set over-representation analysis? Are the results in line with what you expect?
 
-### 4.5 Which gene-pair correlations change across lineages? 
+### 4.5 [Optional] Which gene-pair correlations change across lineages? 
 
-Lastly, using an algorithm called `scHOT` [Ghzanfar et al., 2020](https://www.nature.com/articles/s41592-020-0885-x), we can further test the change in gene expression of **a pair of genes** across a pseudotime. 
+In the previous four questions, the focus is to identify a candidate gene interest. Here we aim to identify candidate "gene-pair".  This is achieve using an algorithm called `scHOT` [Ghzanfar et al., 2020](https://www.nature.com/articles/s41592-020-0885-x), where we can further test the change in gene expression of **a pair of genes** across a pseudotime. In the R package, there are two statistical higher order testing we can perform, controlled by the `higherOrderFunction` argument in `scHOT`. We can test for **differential variability** or **differential correlation** between pairs of genes across the pseudotime.
+1) variability: `higherOrderFunction = matrixStats::weightedVar`
+2) correlation: `higherOrderFunction = matrixStats::weightedSpearman` 
 
+**Computation:**
 To reduce computation time, we will select the top 10 genes identified from `associationTest` in 4.1. Using the top 10 genes, we generate a total of 45 gene pairs to test.
 
 ```{r}
@@ -776,11 +816,7 @@ assoRes_lingeag1_top10 <- rownames(assoRes[order(assoRes$waldStat_1, decreasing 
 gene_to_test <- t(combn(assoRes_lingeag1_top10, 2))
 ```
 
-There are two statistical higher order testing we can perform, controlled by the `higherOrderFunction` argument in `scHOT`. We can test for **differential variability** or **differential correlation** between pairs of genes across the pseudotime.
-1) variability: `higherOrderFunction = matrixStats::weightedVar`
-2) correlation: `higherOrderFunction = matrixStats::weightedSpearman` 
-
-As an illustration, we will investigate whether there are gene pairs that demonstrate differential correlation across the pseudotime for each lineage. 
+**Questions:** To identify gene pairs that are differential correlated across the pseudotime for each lineage and visualise the results of the top 5 significant gene pairs that demonstrate differential correlation across our pseudotime. 
 
 ```{r}
 if(!file.exists("~/output/scHOT_obj.rds")) {
@@ -804,17 +840,17 @@ if(!file.exists("~/output/scHOT_obj.rds")) {
   scHOT_obj <- readRDS("~/output/scHOT_obj.rds")
 }
 
-```
-
-Finally, we can visualise the results of the top 5 significant genes that demonstrate differential correlation across our pseudotime. 
-
-```{r}
 plotHigherOrderSequence(scHOT_obj, rownames(scHOT_obj@scHOT_output)[1:5])
 ```
 
-## 5. Cell-cell communication
+## 5. Cell-cell communication [Optional]
 
-In this section, we will examine the cell-cell communication using [CellChat](https://www.nature.com/articles/s41467-021-21246-9). CellChat requires gene expression data of cells and the cell type grouping information as the user input and models the probability of cell-cell communication by integrating gene expression with prior knowledge of the interactions between signaling ligands, receptors and their cofactors. Here, we will use the normalised data as the input for CellChat analysis, and we set the `ClusterName` as the cell type label.
+Cellular communication is the essential process that enables multicellular life to exist. It is mediated by complex molecular connections, which are frequently referred to as networks. These control the way organisms respond to changes in their internal state and their external environment. In this section, the term "cell-cell communication" refers to the degree to which ligand-receptor pairs co-express each other. We will examine the cell-cell communication using the package  [CellChat](https://www.nature.com/articles/s41467-021-21246-9). 
+
+### 5.1 Estimate cellular communication
+CellChat requires gene expression data of cells and the cell type grouping information as the user input and models the probability of cell-cell communication by integrating gene expression with prior knowledge of the interactions between signaling ligands, receptors and their cofactors. The following illustrate the four steps appraoch for estimating `cell-cell interaction` or `cell-cell communication`.
+
+**Step 1 - Input gene expression data:** We will use the normalised data and set the `ClusterName` as the cell type label.
 
 ```{r}
 library(CellChat)
@@ -826,21 +862,21 @@ cellchat <- setIdent(cellchat, ident.use = "ClusterName") # set "labels" as defa
 levels(cellchat@idents) # show factor levels of the cell labels
 ```
 
-Next, we need to set ligand-receptor interaction database. Since this is a mouse data, we will use `CellChatDB.mouse`.
+**Step 2 - Input ligand-receptor interaction database:** We will need to set ligand-receptor interaction database. Since this is a mouse data, we will use `CellChatDB.mouse`.
 
 ```{r}
 cellchat@DB <- CellChatDB.mouse # Set CellChat Database
 cellchat <- subsetData(cellchat)
 ```
 
-Next, we will use `identifyOverExpressedGenes` and `identifyOverExpressedInteractions` to identify over-expressed ligands or receptors in one cell group and then identify over-expressed ligand-receptor interactions if either ligand or receptor is over-expressed.
+**Step 3 - Identify over expressed interaction:** We will use `identifyOverExpressedGenes` and `identifyOverExpressedInteractions` to identify over-expressed ligands or receptors in one cell group and then identify over-expressed ligand-receptor interactions if either ligand or receptor is over-expressed.
 
 ```{r}
 cellchat <- identifyOverExpressedGenes(cellchat)
 cellchat <- identifyOverExpressedInteractions(cellchat)
 ```
 
-We can now compute the the communication probability and infer cellular communication network at both ligand-receptor pair level (`computeCommunProb`) and pathway level (`computeCommunProbPathway`). CellChat infers the biologically significant cell-cell communication by assigning each interaction with a probability value and peforming a permutation test. 
+**Step 4 - Compute communication probability:** We can now compute the the communication probability and infer cellular communication network at both ligand-receptor pair level (`computeCommunProb`) and pathway level (`computeCommunProbPathway`). CellChat infers the biologically significant cell-cell communication by assigning each interaction with a probability value and peforming a permutation test. 
 
 ```{r}
 #Compute the communication probability and infer cellular communication network
@@ -851,23 +887,26 @@ cellchat <- filterCommunication(cellchat, min.cells = 10)
 cellchat <- computeCommunProbPathway(cellchat)
 ```
 
-With the calculated cell-cell communication probabilities, we can now start analysing the cell-cell communication results. We can first calculate and visualise the aggregated cell-cell communication network by counting the number of links or summarizing the communication probability to create a cell-type interaction network. 
+
+### 5.2 Initial data analysis of cell-cell communication (CCC) and visualization {.tabset .tabset-fade .tabset-pills}
+
+We can now begin doing initial data analysis or descriptive analysis of the cell-cell communication outcomes using the computed cell-cell communication probabilities. To describe the relationship between various cell types, we can first calculate and visualise the aggregated cell-cell com network by counting the number of links or summarizing the communication probability to create a cell-type interaction network. 
+
+#### (a) Cell-type communication network
+The plot below illustrate the cell-type communication network, with each node representing a cell type and its size proportional to the number of cell types in the data; each edge reflects the number of interactions or the weights of interactions between two cell types.
 
 ```{r}
 cellchat <- aggregateNet(cellchat)
-```
 
-
-The plots below showing the cell-type communication network. Each node represents the cell type, with the size associated with the number of cell types in the data; each edges indicates the number of interactions or the interaction weights between the two cell types. 
-
-```{r}
+## Network graph
 groupSize <- as.numeric(table(cellchat@idents))
 par(mfrow = c(1,2), xpd=TRUE)
 netVisual_circle(cellchat@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Number of interactions")
 netVisual_circle(cellchat@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= F, title.name = "Interaction weights/strength")
 ```
 
-Next, we can zoom into a certain signalling pathway and examine the communication level of this pathway between any pairs of cell types. Here, we will use `NCAM` pathway as an example. As shown in the figure below, NCAM pathway have high communication probability between CA, ImmGranule and Granule cell types, but less invovled in communication involved Nbl.
+#### (b) Cell-type communication for a given pathway
+We can zoom into a certain signalling pathway and examine the communication level of this pathway between any pairs of cell types. We will use the 'NCAM' pathway as an illustration, and the figure below demonstrates that the NCAM pathway is highly involved (high communication probability) in communication between CA, ImmGranule, and Granule cell types, but is less involved in communication involving Nbl.
 
 ```{r}
 pathways.show <- c("NCAM") 
@@ -877,12 +916,12 @@ netVisual_aggregate(cellchat, signaling = pathways.show,  vertex.receiver = vert
 netVisual_heatmap(cellchat, signaling = pathways.show, color.heatmap = "Reds")
 ```
 
-Finally, we can visualise the all the significant cell-cell communication of multiple ligand receptor pairs using `netVisual_bubble`, from `CA` (indicated by `source.use = 1`) to all other cell types (indicated by `targets.use = 2:7`). The y-axis indicates the ligand -> receptor pair and the x-axis indicates the sender -> receiver cell type pair. We can see that Nrxn1 - Nlgn1 pair is one of the ligands with high communication probability from cell type `CA`.
+#### (c) Cell-cell communication with bubble plot
+We can visualise the all the significant cell-cell communication of multiple ligand receptor pairs using `netVisual_bubble`, from `CA` (indicated by `source.use = 1`) to all other cell types (indicated by `targets.use = 2:7`). The y-axis indicates the ligand -> receptor pair and the x-axis indicates the sender -> receiver cell type pair. We can see that Nrxn1 - Nlgn1 pair is one of the ligands with high communication probability from cell type `CA`.
 
 ```{r}
 netVisual_bubble(cellchat, sources.use = 1, targets.use = 2:7, remove.isolate = FALSE)
 ```
-
 
 ## Reference and other useful resources:
 
